@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#0b0d10" />
+  <meta name="description" content="24-day HYROX Mixed Doubles training dashboard to race day on 3 October 2026." />
+  <title>HYROX Oct 3 — Race Build</title>
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <div>
+        <div class="eyebrow">HYROX MIXED DOUBLES</div>
+        <h1>Race Build <span>03.10.26</span></h1>
+      </div>
+      <button class="icon-btn" id="exportBtn" aria-label="Export data">↗</button>
+    </header>
+
+    <main>
+      <section class="view active" id="dashboardView">
+        <div class="hero-grid">
+          <article class="card countdown-card">
+            <div class="card-label">RACE COUNTDOWN</div>
+            <div class="countdown" id="countdown">—</div>
+            <div class="muted" id="countdownSub">Saturday, 3 October</div>
+            <div class="target-row">
+              <div><span>Goal</span><strong>1:03–1:05</strong></div>
+              <div><span>Stretch</span><strong>&lt;1:03</strong></div>
+            </div>
+          </article>
+
+          <article class="card score-card">
+            <div class="card-label">CURRENT BASELINE</div>
+            <div class="big-score">30:22</div>
+            <div class="score-sub">Half simulation · Sep 9</div>
+            <div class="mini-stats">
+              <div><span>Run pace</span><strong>4:30/km</strong></div>
+              <div><span>Sled push</span><strong>115 kg</strong></div>
+              <div><span>Lunges</span><strong>10 kg</strong></div>
+            </div>
+          </article>
+        </div>
+
+        <article class="card today-card" id="todayCard">
+          <div class="section-head">
+            <div>
+              <div class="card-label">TODAY</div>
+              <h2 id="todayTitle">Loading…</h2>
+            </div>
+            <div class="pill" id="todayType">—</div>
+          </div>
+          <p class="session-intro" id="todayIntro"></p>
+          <div id="todayWorkout" class="workout-block"></div>
+          <div class="button-row">
+            <button class="primary" id="completeTodayBtn">Log this session</button>
+            <button class="secondary" id="roxfitTodayBtn">Copy to ROXFIT</button>
+          </div>
+        </article>
+
+        <div class="two-col">
+          <article class="card">
+            <div class="section-head"><div><div class="card-label">NEXT UP</div><h3 id="nextTitle">—</h3></div></div>
+            <p class="muted" id="nextDetails">—</p>
+          </article>
+          <article class="card">
+            <div class="section-head"><div><div class="card-label">THIS BLOCK</div><h3>What matters</h3></div></div>
+            <ul class="focus-list">
+              <li>Own the <strong>152 kg sled push</strong>.</li>
+              <li>Make <strong>20 kg lunges</strong> normal.</li>
+              <li>Hold <strong>4:15–4:25/km</strong> while compromised.</li>
+              <li>Practise partner handovers until they are automatic.</li>
+            </ul>
+          </article>
+        </div>
+      </section>
+
+      <section class="view" id="planView">
+        <div class="page-heading">
+          <div><div class="eyebrow">24-DAY BUILD</div><h2>Training plan</h2></div>
+          <div class="legend"><span class="dot hard"></span> Hard <span class="dot easy"></span> Easy <span class="dot rest"></span> Rest</div>
+        </div>
+        <div id="planList" class="plan-list"></div>
+      </section>
+
+      <section class="view" id="logView">
+        <div class="page-heading">
+          <div><div class="eyebrow">SESSION DATA</div><h2>Log a result</h2></div>
+        </div>
+        <form class="card form-card" id="resultForm">
+          <div class="form-grid">
+            <label>Date<input type="date" id="logDate" required /></label>
+            <label>Session<select id="logSession"></select></label>
+            <label>Total time<input type="text" id="totalTime" placeholder="30:22" /></label>
+            <label>Avg run pace / km<input type="text" id="runPace" placeholder="4:30" /></label>
+            <label>Sled push kg<input type="number" id="pushKg" inputmode="decimal" placeholder="152" /></label>
+            <label>Sled pull kg<input type="number" id="pullKg" inputmode="decimal" placeholder="103" /></label>
+            <label>Farmers kg / hand<input type="number" id="farmersKg" inputmode="decimal" placeholder="24" /></label>
+            <label>Lunges kg<input type="number" id="lungesKg" inputmode="decimal" placeholder="20" /></label>
+            <label>RPE / 10<input type="number" min="1" max="10" id="rpe" placeholder="8" /></label>
+            <label class="span-2">ROXFIT result/share link<input type="url" id="roxfitLink" placeholder="https://…" /></label>
+            <label class="span-2">Notes<textarea id="notes" rows="4" placeholder="Transitions, what hurt, what felt easy…"></textarea></label>
+          </div>
+          <div class="button-row">
+            <button class="primary" type="submit">Save result</button>
+            <button class="secondary" type="button" id="openRoxfitBtn">Open ROXFIT</button>
+          </div>
+        </form>
+      </section>
+
+      <section class="view" id="progressView">
+        <div class="page-heading">
+          <div><div class="eyebrow">TREND</div><h2>Progress</h2></div>
+        </div>
+        <div class="metric-grid" id="metricGrid"></div>
+        <article class="card chart-card">
+          <div class="section-head"><div><div class="card-label">PACE TREND</div><h3>Average running pace</h3></div></div>
+          <canvas id="paceChart" height="220"></canvas>
+        </article>
+        <article class="card chart-card">
+          <div class="section-head"><div><div class="card-label">STRENGTH SPECIFICITY</div><h3>Race-load progression</h3></div></div>
+          <div class="load-bars" id="loadBars"></div>
+        </article>
+        <article class="card">
+          <div class="section-head"><div><div class="card-label">HISTORY</div><h3>Logged sessions</h3></div></div>
+          <div id="historyList" class="history-list"></div>
+        </article>
+      </section>
+
+      <section class="view" id="raceView">
+        <div class="page-heading"><div><div class="eyebrow">OCTOBER 3</div><h2>Race plan</h2></div></div>
+        <div class="hero-grid">
+          <article class="card"><div class="card-label">TARGET FINISH</div><div class="big-score">1:03–1:05</div><div class="score-sub">Stretch: sub-1:03</div></article>
+          <article class="card"><div class="card-label">RUNNING TARGET</div><div class="big-score">4:15–4:25</div><div class="score-sub">per km · controlled from km 1</div></article>
+        </div>
+        <article class="card">
+          <div class="section-head"><div><div class="card-label">PROVISIONAL SPLIT</div><h3>Use your strengths</h3></div></div>
+          <div class="race-split" id="raceSplit"></div>
+        </article>
+        <article class="card">
+          <div class="section-head"><div><div class="card-label">RACE RULE</div><h3>Do not race her on the runs</h3></div></div>
+          <p class="session-intro">Your partner can run around 4:00/km comfortably. The team pace should be set by what lets <strong>you</strong> arrive at each station ready to work. She should bank energy on the runs and use it to take efficient aerobic volume on Ski, Row and Wall Balls.</p>
+        </article>
+      </section>
+    </main>
+
+    <nav class="bottom-nav" aria-label="Primary">
+      <button class="nav-btn active" data-view="dashboardView"><span>⌂</span>Today</button>
+      <button class="nav-btn" data-view="planView"><span>▦</span>Plan</button>
+      <button class="nav-btn" data-view="logView"><span>＋</span>Log</button>
+      <button class="nav-btn" data-view="progressView"><span>↗</span>Progress</button>
+      <button class="nav-btn" data-view="raceView"><span>⚑</span>Race</button>
+    </nav>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
