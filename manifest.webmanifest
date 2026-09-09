@@ -1,0 +1,9 @@
+{
+  "name": "HYROX Oct 3 Race Build",
+  "short_name": "HYROX Build",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#0b0d10",
+  "theme_color": "#0b0d10",
+  "description": "HYROX Mixed Doubles training plan and progress tracker for 3 October 2026."
+}
